@@ -1,34 +1,13 @@
 const express = require('express');
-const { readJournal, writeJournal} = require('./service');
 
-async function testServices() {
-   try {
-    let j = await readJournal();
-    console.log(j);
-    
-    const record = {
-        mood: ":)",
-        note: "good",
-        date: new Date().toISOString()
-    }
-
-    await writeJournal(record)
-
-    j = await readJournal();
-    console.log(j);
-   } catch (err) {
-    console.log(err)
-   }
-    
-}
-
-//testServices();
-
+const {configExpress} = require('./config/express');
 
 const app = express();
 
-app.get('/', (req, res) => {
-    res.send('hello world');
-});
+start();
 
-app.listen(3000, () => console.log('server is started on port 3000'));
+async function start() {
+    configExpress(app);
+
+    app.listen(3000, () => console.log('server is started on port 3000'));
+}
